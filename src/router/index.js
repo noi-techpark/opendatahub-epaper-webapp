@@ -97,6 +97,10 @@ router.beforeEach((to, from, next) => {
       // Redirect to an error page
       next({ name: 'Unauthorized' })
     }
+  } else if (Vue.$keycloak.authenticated && to.name === "Login") {
+    // This page is Login and user is already authenticated
+    // Redirect to home
+    next("/")
   } else {
     // This page did not require authentication
     next()
