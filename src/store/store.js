@@ -314,7 +314,7 @@ export default new Vuex.Store({
       return axios
         .delete(URL, this.state.axiosKeycloakConfig)
         .then(() => {
-          commit("DELETE_LOCATION", location)
+          commit("DELETE_LOCATION", location);
           return Promise.resolve();
         })
         .catch(err => {
