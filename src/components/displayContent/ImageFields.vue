@@ -73,9 +73,11 @@ const fieldTypes = [
   { value: "EVENT_DESCRIPTION", text: "Event description" },
   { value: "EVENT_START_DATE", text: "Event start date" },
   { value: "EVENT_END_DATE", text: "Event end date" },
+  { value: "EVENT_ORGANIZER", text: "Event organizer" },
   { value: "UPCOMING_EVENT_DESCRIPTION", text: "Upcoming event description" },
   { value: "UPCOMING_EVENT_START_DATE", text: "Upcoming event start date" },
   { value: "UPCOMING_EVENT_END_DATE", text: "Upcoming event end date" },
+  { value: "UPCOMING_EVENT_ORGANIZER", text: "Upcoming event organizer" },
 ];
 
 export default {
