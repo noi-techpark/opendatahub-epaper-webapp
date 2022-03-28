@@ -6,6 +6,10 @@
       head-variant="dark"
       :items="imageFields"
       :fields="tableColumns"
+      :selectable="true"
+      select-mode="single"
+      :no-select-on-click="true"
+      ref="fieldTable"
     >
       <template v-slot:cell(fieldType)="row">
         <b-col>
@@ -13,6 +17,7 @@
             :value="row.item.fieldType"
             :options="fieldTypes"
             @input="onFieldTypeChange($event, row)"
+            @click="selectRow(row.index)"
           >
           </b-form-select>
         </b-col>
@@ -24,6 +29,7 @@
             :value="row.item.customText"
             :disabled="row.item.fieldType != 'CUSTOM_TEXT'"
             @input="handleInput($event, row.index, 'customText')"
+            @click="selectRow(row.index)"
           ></b-form-input>
         </b-col>
       </template>
@@ -33,6 +39,7 @@
             :value="row.item.fontSize"
             @input="handleInput($event, row.index, 'fontSize')"
             type="number"
+            @click="selectRow(row.index)"
           ></b-form-input>
         </b-col>
       </template>
@@ -42,6 +49,7 @@
             :value="row.item.xPos"
             @input="handleInput($event, row.index, 'xPos')"
             type="number"
+            @click="selectRow(row.index)"
           ></b-form-input>
         </b-col>
       </template>
@@ -51,6 +59,18 @@
             :value="row.item.yPos"
             @input="handleInput($event, row.index, 'yPos')"
             type="number"
+            @click="selectRow(row.index)"
+          ></b-form-input>
+        </b-col>
+      </template>
+      <template v-slot:cell(height)="row">
+        <b-col>
+          <b-form-input
+            :value="row.item.height"
+            :min="row.item.fontSize"
+            @input="handleInput($event, row.index, 'height')"
+            type="number"
+            @click="selectRow(row.index)"
           ></b-form-input>
         </b-col>
       </template>
@@ -93,12 +113,17 @@ export default {
         { key: "fontSize", sortable: false },
         { key: "xPos", sortable: false },
         { key: "yPos", sortable: false },
+        { key: "height", sortable: false },
         { key: "options", sortable: false },
       ],
+      selectedRow: 0,
     };
   },
   created() {
     this.fieldTypes = fieldTypes;
+  },
+  mounted() {
+    this.selectRow(this.selectedRow);
   },
   methods: {
     copyImageFields() {
@@ -137,6 +162,16 @@ export default {
       fields[index][column] = value;
       this.$emit("input", fields);
     },
+    selectRow(index) {
+      if (!this.$refs.fieldTable.isRowSelected(index)) {
+        this.$refs.fieldTable.selectRow(index);
+        this.selectedRow = index;
+        this.$emit("selectedRowChange", index);
+      }
+    },
+  },
+  updated() {
+    this.selectRow(this.selectedRow);
   },
 };
 </script>
