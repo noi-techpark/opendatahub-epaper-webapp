@@ -6,73 +6,60 @@
       head-variant="dark"
       :items="imageFields"
       :fields="tableColumns"
-      :selectable="true"
+      selectable
       select-mode="single"
-      :no-select-on-click="true"
+      no-select-on-click
       ref="fieldTable"
     >
       <template v-slot:cell(fieldType)="row">
-        <b-col>
-          <b-form-select
-            :value="row.item.fieldType"
-            :options="fieldTypes"
-            @input="onFieldTypeChange($event, row)"
-            @click="selectRow(row.index)"
-          >
-          </b-form-select>
-        </b-col>
+        <b-form-select
+          :value="row.item.fieldType"
+          :options="fieldTypes"
+          @input="onFieldTypeChange($event, row)"
+          @click="selectRow(row.index)"
+        >
+        </b-form-select>
       </template>
       <template v-slot:cell(text)="row">
-        <b-col>
-          <b-form-input
-            type="text"
-            :value="row.item.customText"
-            :disabled="row.item.fieldType != 'CUSTOM_TEXT'"
-            @input="handleInput($event, row.index, 'customText')"
-            @click="selectRow(row.index)"
-          ></b-form-input>
-        </b-col>
+        <b-form-textarea
+          type="text"
+          :value="row.item.customText"
+          :disabled="row.item.fieldType != 'CUSTOM_TEXT'"
+          @input="handleInput($event, row.index, 'customText')"
+          @click="selectRow(row.index)"
+        ></b-form-textarea>
       </template>
       <template v-slot:cell(fontSize)="row">
-        <b-col>
-          <b-form-input
-            :value="row.item.fontSize"
-            @input="handleInput($event, row.index, 'fontSize')"
-            type="number"
-            @click="selectRow(row.index)"
-          ></b-form-input>
-        </b-col>
+        <b-form-input
+          :value="row.item.fontSize"
+          @input="handleInput($event, row.index, 'fontSize')"
+          type="number"
+          @click="selectRow(row.index)"
+        ></b-form-input>
       </template>
       <template v-slot:cell(xPos)="row">
-        <b-col>
-          <b-form-input
-            :value="row.item.xPos"
-            @input="handleInput($event, row.index, 'xPos')"
-            type="number"
-            @click="selectRow(row.index)"
-          ></b-form-input>
-        </b-col>
+        <b-form-input
+          :value="row.item.xPos"
+          @input="handleInput($event, row.index, 'xPos')"
+          type="number"
+          @click="selectRow(row.index)"
+        ></b-form-input>
       </template>
       <template v-slot:cell(yPos)="row">
-        <b-col>
-          <b-form-input
-            :value="row.item.yPos"
-            @input="handleInput($event, row.index, 'yPos')"
-            type="number"
-            @click="selectRow(row.index)"
-          ></b-form-input>
-        </b-col>
+        <b-form-input
+          :value="row.item.yPos"
+          @input="handleInput($event, row.index, 'yPos')"
+          type="number"
+          @click="selectRow(row.index)"
+        ></b-form-input>
       </template>
       <template v-slot:cell(height)="row">
-        <b-col>
-          <b-form-input
-            :value="row.item.height"
-            :min="row.item.fontSize"
-            @input="handleInput($event, row.index, 'height')"
-            type="number"
-            @click="selectRow(row.index)"
-          ></b-form-input>
-        </b-col>
+        <b-form-input
+          :value="row.item.height"
+          @input="handleInput($event, row.index, 'height')"
+          type="number"
+          @click="selectRow(row.index)"
+        ></b-form-input>
       </template>
       <template v-slot:cell(options)="row">
         <b-button variant="danger" @click="rowDeleteClick(row)" class="mr-2">
@@ -153,6 +140,7 @@ export default {
         fontSize: 20,
         xPos: 50,
         yPos: 50,
+        height: 30,
         customText: "",
       });
       this.$emit("input", fields);

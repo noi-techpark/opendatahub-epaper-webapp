@@ -56,7 +56,7 @@ export default {
         let context = canvas.getContext("2d");
 
         context.drawImage(this.previewImg, 0, 0);
-        context.lineWidth = 1;
+        context.lineWidth = 3;
 
         if (this.imageFields) {
           this.imageFields.forEach((f, index) => {
