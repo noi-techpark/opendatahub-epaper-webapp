@@ -35,6 +35,11 @@
             Warning: {{ display.warningMessage }}
           </b-col>
         </b-row>
+                <b-row>
+          <b-col>
+            Image hash: {{ display.currentImageHash || "No hash (display did not request the image yet)" }}
+          </b-col>
+        </b-row>
         <b-row>
           <b-col>
             Image hash:
