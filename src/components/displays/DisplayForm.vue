@@ -85,7 +85,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           required
         >
           <template v-slot:first>
-            <b-form-select-option :value="null" disabled
+            <b-form-select-option :value="null"
               >Select template...</b-form-select-option
             >
           </template>
@@ -137,7 +137,7 @@ export default {
       return this.$store.state.rooms;
     },
     enableTemplateSection() {
-      return this.resolutionUuid !== null && this.roomCodes.length > 1;
+      return this.resolutionUuid !== null && this.roomCodes.length > 0;
     },
     resolutions() {
       return this.$store.state.resolutions.map((r) => {
@@ -202,7 +202,7 @@ export default {
 
         // Update the positions in sortedRoomsArray based on the new order
         this.sortedRoomsArray = this.sortedSelectedRooms.map(
-          (room) => room.value,
+          (room) => room.value
         );
       }
     },
@@ -224,7 +224,7 @@ export default {
             ? this.sortedRoomsArray
             : roomCodes,
         resolution: this.$store.state.resolutions.find(
-          (r) => r.uuid === resolutionUuid,
+          (r) => r.uuid === resolutionUuid
         ),
         template: temp,
       };
@@ -241,7 +241,7 @@ export default {
         .catch((err) => {
           this.$bvToast.toast(
             "Failed to save display " + err,
-            toastPresets.errorMessage,
+            toastPresets.errorMessage
           );
         });
     },
