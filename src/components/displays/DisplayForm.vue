@@ -168,6 +168,7 @@ export default {
     },
     sortedRoomOptions() {
       const selectedCount = this.roomCodes.length;
+
       return this.roomOptions.map((option, index) => ({
         ...option,
         selected: this.roomCodes.includes(option.value),
@@ -184,6 +185,10 @@ export default {
   watch: {
     rooms: {
       handler(newRooms) {
+        
+        console.log(newRooms);
+        newRooms.sort((a, b) => a.name.localeCompare(b.name));
+
         this.roomOptions = newRooms.map((room) => {
           return {
             value: room.code,
