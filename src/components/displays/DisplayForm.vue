@@ -53,6 +53,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                   :key="item.id"
                 >
                   <b-button
+                    variant="info"
                     :disabled="selectedRooms.length == 6"
                     @click="selectRoom(item)"
                   >
@@ -80,14 +81,15 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                 </b-list-group-item>
                 <b-list-group-item
                   class="d-flex justify-content-between align-items-center"
-                  v-for="item in selectedRooms"
+                  v-for="(item, index) in selectedRooms"
                   :key="item.id"
                 >
-                  <b-button @click="removeRoom(item)">
-                    {{ item.name }}
+                  <b-button variant="info" @click="removeRoom(item)">
+                    #{{index + 1}} {{ item.name }}
                   </b-button>
                   <span>
                     <b-button
+                      variant="info"
                       :disabled="selectedRooms.indexOf(item) == 0"
                       @click="moveRoomUp(item)"
                     >
@@ -95,6 +97,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                     </b-button>
 
                     <b-button
+                      variant="info"
                       :disabled="
                         selectedRooms.indexOf(item) == selectedRooms.length - 1
                       "
