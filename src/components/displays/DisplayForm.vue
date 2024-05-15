@@ -163,13 +163,13 @@ export default {
     submitDisplay() {
       const { name, uuid, selectedRooms, resolutionUuid, display } = this;
 
-      selectedRooms.map((room) => room.code);
+      let roomCodes = selectedRooms.map((room) => room.code);
 
       const data = {
         ...display,
         name,
         uuid,
-        selectedRooms,
+        roomCodes,
         resolution: this.$store.state.resolutions.find(
           (r) => r.uuid === resolutionUuid
         ),
