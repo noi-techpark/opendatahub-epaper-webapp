@@ -85,7 +85,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                   :key="item.id"
                 >
                   <b-button variant="info" @click="removeRoom(item)">
-                    #{{index + 1}} {{ item.name }}
+                    #{{ index + 1 }} {{ item.name }}
                   </b-button>
                   <span>
                     <b-button
@@ -158,6 +158,14 @@ export default {
     pageTitle() {
       return this.editMode ? "Edit display" : "Add display";
     },
+  },
+  mounted() {
+    // assign selected rooms from display.roomCodes, for editing
+    this.selectedRooms = this.display.roomCodes
+      ? this.$store.state.rooms.filter((r) =>
+          this.display.roomCodes.includes(r.code)
+        )
+      : [];
   },
   methods: {
     submitDisplay() {
