@@ -23,7 +23,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       </b-form-group>
 
       <!-- resolution -->
-      <b-form-select v-model="resolutionUuid" :options="resolutions">
+      <b-form-select
+        v-model="resolutionUuid"
+        :disabled="editMode"
+        :options="resolutions"
+      >
         <template v-slot:first>
           <b-form-select-option :value="null" disabled
             >Select resolution...</b-form-select-option

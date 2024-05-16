@@ -23,7 +23,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           />
 
           <!-- resolution -->
-          <b-form-select v-model="resolution" :options="resolutions">
+          <b-form-select
+            :disabled="editMode"
+            v-model="resolution"
+            :options="resolutions"
+          >
           </b-form-select>
 
           <!-- <b-form-file v-model="image" accept="image/*"></b-form-file> -->
