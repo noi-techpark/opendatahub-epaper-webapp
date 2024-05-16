@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <canvas class="image_canvas" :id="canvasid" width="0" height="0"></canvas>
+  <canvas class="imageCanvas" :id="canvasid"></canvas>
 </template>
 
 <script>
@@ -60,6 +60,11 @@ export default {
       this.refreshImageCanvas();
     },
     width: {
+      handler: function () {
+        this.refreshImageCanvas();
+      },
+    },
+    height: {
       handler: function () {
         this.refreshImageCanvas();
       },
@@ -139,10 +144,9 @@ export default {
 </script>
 
 <style scoped>
-.image_canvas {
-  position: relative;
+.imageCanvas {
   filter: grayscale(100%);
-
   border: 2px solid;
+  position: relative;
 }
 </style>
