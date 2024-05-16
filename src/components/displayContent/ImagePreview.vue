@@ -10,7 +10,13 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <script>
 export default {
-  props: ["imageSrc", "imageFields", "focusedFieldIndex"],
+  props: {
+    editMode: Boolean,
+    imageFields: Array,
+    focusedFieldIndex: Number,
+    width: Number,
+    height: Number,
+  },
   created() {
     //To prevent duplicate ids between separate instances
     this.canvasid = Math.ceil(Math.random() * 1000000);
@@ -20,12 +26,11 @@ export default {
     this.previewImg.onerror = () => {
       const canvas = document.getElementById(this.canvasid);
       if (canvas) {
-        canvas.width = 0;
-        canvas.height = 0;
+        canvas.width = this.width;
+        canvas.height = this.height;
       }
     };
     this.previewImg.alt = "";
-    this.previewImg.src = this.imageSrc;
     this.previewImg.onload = () => {
       if (this.previewImg.src) {
         const canvas = document.getElementById(this.canvasid);
@@ -54,10 +59,18 @@ export default {
     focusedFieldIndex() {
       this.refreshImageCanvas();
     },
+    width: {
+      handler: function () {
+        this.refreshImageCanvas();
+      },
+    },
   },
   methods: {
     refreshImageCanvas() {
-      const canvas = document.getElementById(this.canvasid);
+      let canvas = document.getElementById(this.canvasid);
+
+      canvas.width = this.width;
+      canvas.height = this.height;
       if (this.previewImg && canvas.width > 0 && canvas.height > 0) {
         let context = canvas.getContext("2d");
 
@@ -129,5 +142,7 @@ export default {
 .image_canvas {
   position: relative;
   filter: grayscale(100%);
+
+  border: 2px solid;
 }
 </style>

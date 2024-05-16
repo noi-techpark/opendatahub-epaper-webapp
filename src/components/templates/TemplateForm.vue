@@ -24,15 +24,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
           <!-- resolution -->
           <b-form-select v-model="resolution" :options="resolutions">
-            <template v-slot:first>
-              <b-form-select-option :value="null" disabled
-                >Select resolution...</b-form-select-option
-              >
-            </template>
           </b-form-select>
 
-          <!-- content -->
           <!-- <b-form-file v-model="image" accept="image/*"></b-form-file> -->
+
+          <!-- content preview -->
           <b-card>
             <b-card-text>
               <ImageFields
@@ -49,6 +45,8 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         :imageSrc="imageSrc"
         :imageFields="imageFields"
         :focusedFieldIndex="focusedFieldIndex"
+        :width="resolution ? resolution.width : 1440"
+        :height="resolution ? resolution.height : 2560"
       ></ImagePreview>
     </div>
     <div>
@@ -110,6 +108,12 @@ export default {
       });
     },
   },
+  mounted() {
+    // set resolution to first, if not set yet
+    if (this.resolution == null) {
+      this.resolution = this.resolutions[0].value;
+    }
+  },
 
   methods: {
     submitTemplate() {
@@ -162,12 +166,12 @@ export default {
   overflow: auto;
 }
 .form_card {
-  width: 60%;
+  width: 50%;
   float: left;
   margin-bottom: 5px;
 }
 .image_preview {
-  width: 38%;
+  width: 45%;
 }
 
 /* Responsive layout - makes a one column-layout instead of two-column layout */
