@@ -163,7 +163,7 @@ export default {
     // get rooms, but keep order of roomCodes from API
     if (this.display.roomCodes) {
       this.selectedRooms = this.display.roomCodes.map((code) =>
-        this.$store.state.rooms.find((r) => code == r.code)
+        this.rooms.find((r) => code == r.code)
       );
     }
   },
