@@ -85,7 +85,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                   :key="item.id"
                 >
                   <b-button variant="info" @click="removeRoom(item)">
-                    #{{ index + 1 }} {{ item.name }}
+                    #{{ index + 1 }} - {{ item.name }}
                   </b-button>
                   <span>
                     <b-button
@@ -160,12 +160,12 @@ export default {
     },
   },
   mounted() {
-    // assign selected rooms from display.roomCodes, for editing
-    this.selectedRooms = this.display.roomCodes
-      ? this.$store.state.rooms.filter((r) =>
-          this.display.roomCodes.includes(r.code)
-        )
-      : [];
+    // get rooms, but keep order of roomCodes from API
+    if (this.display.roomCodes) {
+      this.selectedRooms = this.display.roomCodes.map((code) =>
+        this.$store.state.rooms.find((r) => code == r.code)
+      );
+    }
   },
   methods: {
     submitDisplay() {
@@ -214,7 +214,7 @@ export default {
     },
 
     removeRoom(room) {
-      this.selectedRooms.splice(room, 1);
+      this.selectedRooms.splice(this.selectedRooms.indexOf(room), 1);
     },
 
     moveRoomUp(room) {
