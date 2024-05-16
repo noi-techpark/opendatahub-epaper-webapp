@@ -8,6 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
   <b-form @submit.prevent="submitTemplate">
     <div class="editor">
       <b-card :title="pageTitle" class="form_card">
+        <!-- general info name, description -->
         <b-card-text>
           <b-form-input
             v-model="name"
@@ -20,7 +21,18 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             label="Description"
             placeholder="Enter a description"
           />
-          <b-form-file v-model="image" accept="image/*"></b-form-file>
+
+          <!-- resolution -->
+          <b-form-select v-model="resolution" :options="resolutions">
+            <template v-slot:first>
+              <b-form-select-option :value="null" disabled
+                >Select resolution...</b-form-select-option
+              >
+            </template>
+          </b-form-select>
+
+          <!-- content -->
+          <!-- <b-form-file v-model="image" accept="image/*"></b-form-file> -->
           <b-card>
             <b-card-text>
               <ImageFields
@@ -58,10 +70,12 @@ import ImagePreview from "@/components/displayContent/ImagePreview.vue";
 export default {
   props: {
     editMode: Boolean,
-    initialName: String,
-    initialDescription: String,
-    initialImageFields: Array,
-    templateId: String,
+    template: {
+      type: Object,
+      default: function () {
+        return {};
+      },
+    },
   },
   components: {
     ImageFields,
@@ -69,11 +83,11 @@ export default {
   },
   data() {
     return {
-      name: this.initialName,
-      description: this.initialDescription,
-      image: null,
-      imageFields: this.initialImageFields || [],
-      focusedFieldIndex: null
+      name: this.template.name,
+      description: this.template.description,
+      imageFields: this.template.imageFields || [],
+      focusedFieldIndex: null,
+      resolution: this.template.resolution || null,
     };
   },
   computed: {
@@ -81,19 +95,26 @@ export default {
       return this.editMode ? "Edit template" : "Add template";
     },
     imageSrc() {
-      return this.editMode && !this.image
+      return this.editMode
         ? `${this.$store.state.URI}/template/get-image/${
             this.templateId
           }?x=${Date.now()}`
-        : this.image;
+        : null;
+    },
+    resolutions() {
+      return this.$store.state.resolutions.map((r) => {
+        return {
+          value: r,
+          text: `${r.width} x ${r.height} (${r.bitDepth} bit)`,
+        };
+      });
     },
   },
 
   methods: {
     submitTemplate() {
-      const { name, description, imageFields, image, templateId } = this;
+      const { name, description, resolution, imageFields, templateId } = this;
       const templateContent = {
-        image,
         displayContent: {
           imageFields,
         },
@@ -102,6 +123,7 @@ export default {
       const template = {
         name,
         description,
+        resolution,
       };
 
       let storeOperation;
@@ -130,7 +152,7 @@ export default {
     },
     onSelectedRowChange(index) {
       this.focusedFieldIndex = index;
-    }
+    },
   },
 };
 </script>
