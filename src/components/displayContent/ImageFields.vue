@@ -26,27 +26,18 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       >
         <template v-slot:cell(content)="row">
           <b-form-textarea
-            v-if="row.item.fieldType != 'IMAGE'"
             type="text"
             :value="row.item.customText"
             :disabled="row.item.fieldType != 'CUSTOM_TEXT'"
             @input="handleInput($event, row.index, 'customText')"
             @click="selectRow(row.index)"
           ></b-form-textarea>
-          <b-form-file
-            @click="selectRow(row.index)"
-            @input="handleInput($event, row.index, 'image')"
-            v-else
-            v-model="row.item.image"
-            accept="image/*"
-          ></b-form-file>
         </template>
         <template v-slot:cell(fontSize)="row">
           <b-form-input
             :value="row.item.fontSize"
             @input="handleInput($event, row.index, 'fontSize')"
             type="number"
-            :disabled="row.item.fieldType == 'IMAGE'"
             @click="selectRow(row.index)"
           ></b-form-input>
         </template>
@@ -95,7 +86,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <script>
 const fieldTypes = [
   { value: "CUSTOM_TEXT", text: "Custom text" },
-  { value: "IMAGE", text: "Image" },
   { value: "LOCATION_NAME", text: "Location name" },
   { value: "EVENT_DESCRIPTION", text: "Event description" },
   { value: "EVENT_START_DATE", text: "Event start date" },
@@ -148,7 +138,6 @@ export default {
       const fields = this.copyImageFields();
       fields.push({
         fieldType: this.newFieldType,
-        image: null,
         fontSize: 20,
         xPos: 50,
         yPos: 50,
