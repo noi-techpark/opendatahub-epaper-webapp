@@ -22,13 +22,28 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             placeholder="Enter a description"
           />
 
-          <!-- resolution -->
-          <b-form-select
-            :disabled="editMode"
-            v-model="resolution"
-            :options="resolutions"
-          >
-          </b-form-select>
+          <b-input-group>
+            <!-- resolution -->
+            <b-form-select
+              :disabled="editMode"
+              v-model="resolution"
+              :options="resolutions"
+            >
+            </b-form-select>
+
+            <!-- max rooms -->
+            <b-form-select v-model="maxRooms">
+              <b-form-select-option selected :value="1"
+                >1 rooms</b-form-select-option
+              >
+              <b-form-select-option :value="2">2 rooms</b-form-select-option>
+              <b-form-select-option :value="3">3 rooms</b-form-select-option>
+              <b-form-select-option :value="4">4 rooms</b-form-select-option>
+              <b-form-select-option :value="5">5 rooms</b-form-select-option>
+              <b-form-select-option :value="6">6 rooms</b-form-select-option>
+            </b-form-select>
+          </b-input-group>
+          <!-- image -->
           <b-form-file v-model="image" accept="image/*"></b-form-file>
 
           <!-- content preview -->
@@ -86,7 +101,10 @@ export default {
       name: this.template.name,
       description: this.template.description,
       image: null,
-      imageFields: this.template.displayContent.imageFields || [],
+      maxRooms: this.template.maxRooms || 1,
+      imageFields: this.template.displayContent
+        ? this.template.displayContent.imageFields
+        : [],
       focusedFieldIndex: null,
       resolution: this.template.resolution || null,
     };
@@ -120,7 +138,8 @@ export default {
 
   methods: {
     submitTemplate() {
-      const { name, description, resolution,image, imageFields} = this;
+      const { name, description, resolution, maxRooms, image, imageFields } =
+        this;
       const templateContent = {
         image,
         displayContent: {
@@ -130,6 +149,7 @@ export default {
       const newTemplate = {
         name,
         description,
+        maxRooms,
         resolution,
       };
 
