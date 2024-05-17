@@ -120,11 +120,9 @@ export default {
               // images
               let img = new Image();
               img.onload = function () {
-                ctx.drawImage(img, f.xPos, f.yPos);
-                alert("the image is drawn");
+                context.drawImage(img, f.xPos, f.yPos);
               };
               img.src = URL.createObjectURL(f.image);
-              // context.drawImage(f.image, f.xPos, f.yPos);
             }
           });
         }
