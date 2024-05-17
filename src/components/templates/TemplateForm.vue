@@ -42,8 +42,15 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             </b-card-text>
           </b-card>
         </b-card-text>
+        <div>
+          <b-button variant="danger" to="/templates" class="mt-2 mr-2">
+            Cancel
+          </b-button>
+          <b-button variant="success" type="submit" class="mt-2">
+            Save
+          </b-button>
+        </div>
       </b-card>
-      Template image preview
       <ImagePreview
         class="image_preview"
         :imageSrc="imageSrc"
@@ -52,14 +59,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         :width="resolution ? resolution.width : 1440"
         :height="resolution ? resolution.height : 2560"
       ></ImagePreview>
-    </div>
-    <div>
-      <b-button variant="danger" to="/templates" class="mt-2 mr-2">
-        Cancel
-      </b-button>
-      <b-button variant="success" type="submit" class="mt-2">
-        Save template
-      </b-button>
     </div>
   </b-form>
 </template>

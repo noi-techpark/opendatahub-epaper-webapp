@@ -6,84 +6,86 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <template>
   <div>
-    <b-table
-      striped
-      small
-      head-variant="dark"
-      :items="imageFields"
-      :fields="tableColumns"
-      selectable
-      select-mode="single"
-      no-select-on-click
-      ref="fieldTable"
-    >
-      <template v-slot:cell(fieldType)="row">
-        <b-form-select
-          :value="row.item.fieldType"
-          :options="fieldTypes"
-          @input="onFieldTypeChange($event, row)"
-          @click="selectRow(row.index)"
-        >
-        </b-form-select>
-      </template>
-      <template v-slot:cell(text)="row">
-        <b-form-textarea
-          type="text"
-          :value="row.item.customText"
-          :disabled="row.item.fieldType != 'CUSTOM_TEXT'"
-          @input="handleInput($event, row.index, 'customText')"
-          @click="selectRow(row.index)"
-        ></b-form-textarea>
-      </template>
-      <template v-slot:cell(fontSize)="row">
-        <b-form-input
-          :value="row.item.fontSize"
-          @input="handleInput($event, row.index, 'fontSize')"
-          type="number"
-          @click="selectRow(row.index)"
-        ></b-form-input>
-      </template>
-      <template v-slot:cell(xPos)="row">
-        <b-form-input
-          :value="row.item.xPos"
-          @input="handleInput($event, row.index, 'xPos')"
-          type="number"
-          @click="selectRow(row.index)"
-        ></b-form-input>
-      </template>
-      <template v-slot:cell(yPos)="row">
-        <b-form-input
-          :value="row.item.yPos"
-          @input="handleInput($event, row.index, 'yPos')"
-          type="number"
-          @click="selectRow(row.index)"
-        ></b-form-input>
-      </template>
-      <template v-slot:cell(width)="row">
-        <b-form-input
-          :value="row.item.width"
-          @input="handleInput($event, row.index, 'width')"
-          type="number"
-          @click="selectRow(row.index)"
-        ></b-form-input>
-      </template>
-      <template v-slot:cell(height)="row">
-        <b-form-input
-          :value="row.item.height"
-          @input="handleInput($event, row.index, 'height')"
-          type="number"
-          @click="selectRow(row.index)"
-        ></b-form-input>
-      </template>
-      <template v-slot:cell(options)="row">
-        <b-button variant="danger" @click="rowDeleteClick(row)" class="mr-2">
-          Delete
-        </b-button>
-      </template>
-    </b-table>
     <b-button variant="success" @click="addNewField()">
       Add new field
     </b-button>
+    <div class="container">
+      <b-table
+        striped
+        small
+        head-variant="dark"
+        :items="imageFields"
+        :fields="tableColumns"
+        selectable
+        select-mode="single"
+        no-select-on-click
+        ref="fieldTable"
+      >
+        <template v-slot:cell(fieldType)="row">
+          <b-form-select
+            :value="row.item.fieldType"
+            :options="fieldTypes"
+            @input="onFieldTypeChange($event, row)"
+            @click="selectRow(row.index)"
+          >
+          </b-form-select>
+        </template>
+        <template v-slot:cell(text)="row">
+          <b-form-textarea
+            type="text"
+            :value="row.item.customText"
+            :disabled="row.item.fieldType != 'CUSTOM_TEXT'"
+            @input="handleInput($event, row.index, 'customText')"
+            @click="selectRow(row.index)"
+          ></b-form-textarea>
+        </template>
+        <template v-slot:cell(fontSize)="row">
+          <b-form-input
+            :value="row.item.fontSize"
+            @input="handleInput($event, row.index, 'fontSize')"
+            type="number"
+            @click="selectRow(row.index)"
+          ></b-form-input>
+        </template>
+        <template v-slot:cell(xPos)="row">
+          <b-form-input
+            :value="row.item.xPos"
+            @input="handleInput($event, row.index, 'xPos')"
+            type="number"
+            @click="selectRow(row.index)"
+          ></b-form-input>
+        </template>
+        <template v-slot:cell(yPos)="row">
+          <b-form-input
+            :value="row.item.yPos"
+            @input="handleInput($event, row.index, 'yPos')"
+            type="number"
+            @click="selectRow(row.index)"
+          ></b-form-input>
+        </template>
+        <template v-slot:cell(width)="row">
+          <b-form-input
+            :value="row.item.width"
+            @input="handleInput($event, row.index, 'width')"
+            type="number"
+            @click="selectRow(row.index)"
+          ></b-form-input>
+        </template>
+        <template v-slot:cell(height)="row">
+          <b-form-input
+            :value="row.item.height"
+            @input="handleInput($event, row.index, 'height')"
+            type="number"
+            @click="selectRow(row.index)"
+          ></b-form-input>
+        </template>
+        <template v-slot:cell(options)="row">
+          <b-button variant="danger" @click="rowDeleteClick(row)" class="mr-2">
+            Delete
+          </b-button>
+        </template>
+      </b-table>
+    </div>
   </div>
 </template>
 
@@ -179,3 +181,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.container {
+  height: 400px;
+  overflow: scroll;
+  margin-top: 20px;
+}
+</style>
