@@ -1,4 +1,4 @@
-<!--
+props<!--
 SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
 
 SPDX-License-Identifier: AGPL-3.0-or-later
@@ -31,6 +31,7 @@ export default {
       }
     };
     this.previewImg.alt = "";
+    this.previewImg.src = this.imageSrc;
     this.previewImg.onload = () => {
       if (this.previewImg.src) {
         const canvas = document.getElementById(this.canvasid);
@@ -84,45 +85,36 @@ export default {
 
         if (this.imageFields) {
           this.imageFields.forEach((f, index) => {
-            if (f.image == null) {
-              context.font = `${f.fontSize}px sans-serif`;
-              context.fillText(f.customText, f.xPos, f.yPos);
+            context.font = `${f.fontSize}px sans-serif`;
+            context.fillText(f.customText, f.xPos, f.yPos);
 
-              if (this.focusedFieldIndex === index) {
-                //Draw text field boundaries
-                const xPos = parseInt(f.xPos);
-                const yPos = parseInt(f.yPos) - parseInt(f.fontSize);
-                const width = parseInt(f.width);
-                const height = parseInt(f.height);
+            if (this.focusedFieldIndex === index) {
+              //Draw text field boundaries
+              const xPos = parseInt(f.xPos);
+              const yPos = parseInt(f.yPos) - parseInt(f.fontSize);
+              const width = parseInt(f.width);
+              const height = parseInt(f.height);
 
-                //Draw upper border
-                this.drawDashedLine(context, xPos, yPos, xPos + width, yPos);
-                //Draw right border
-                this.drawDashedLine(
-                  context,
-                  xPos + width,
-                  yPos,
-                  xPos + width,
-                  yPos + height
-                );
-                //Draw bottom border
-                this.drawDashedLine(
-                  context,
-                  xPos,
-                  yPos + height,
-                  xPos + width,
-                  yPos + height
-                );
-                //Draw left border
-                this.drawDashedLine(context, xPos, yPos, xPos, yPos + height);
-              }
-            } else {
-              // images
-              let img = new Image();
-              img.onload = function () {
-                context.drawImage(img, f.xPos, f.yPos);
-              };
-              img.src = URL.createObjectURL(f.image);
+              //Draw upper border
+              this.drawDashedLine(context, xPos, yPos, xPos + width, yPos);
+              //Draw right border
+              this.drawDashedLine(
+                context,
+                xPos + width,
+                yPos,
+                xPos + width,
+                yPos + height
+              );
+              //Draw bottom border
+              this.drawDashedLine(
+                context,
+                xPos,
+                yPos + height,
+                xPos + width,
+                yPos + height
+              );
+              //Draw left border
+              this.drawDashedLine(context, xPos, yPos, xPos, yPos + height);
             }
           });
         }
