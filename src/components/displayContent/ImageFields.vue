@@ -6,9 +6,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <template>
   <div>
-    <b-button variant="success" @click="addNewField()">
-      Add new field
-    </b-button>
+    <b-input-group>
+      <b-form-select v-model="newFieldType" :options="fieldTypes">
+      </b-form-select>
+      <b-button variant="success" @click="addNewField()"> Add </b-button>
+    </b-input-group>
+
     <div class="container">
       <b-table
         striped
@@ -21,29 +24,29 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         no-select-on-click
         ref="fieldTable"
       >
-        <template v-slot:cell(fieldType)="row">
-          <b-form-select
-            :value="row.item.fieldType"
-            :options="fieldTypes"
-            @input="onFieldTypeChange($event, row)"
-            @click="selectRow(row.index)"
-          >
-          </b-form-select>
-        </template>
-        <template v-slot:cell(text)="row">
+        <template v-slot:cell(content)="row">
           <b-form-textarea
+            v-if="row.item.fieldType != 'IMAGE'"
             type="text"
             :value="row.item.customText"
             :disabled="row.item.fieldType != 'CUSTOM_TEXT'"
             @input="handleInput($event, row.index, 'customText')"
             @click="selectRow(row.index)"
           ></b-form-textarea>
+          <b-form-file
+            @click="selectRow(row.index)"
+            @input="handleInput($event, row.index, 'image')"
+            v-else
+            v-model="row.item.image"
+            accept="image/*"
+          ></b-form-file>
         </template>
         <template v-slot:cell(fontSize)="row">
           <b-form-input
             :value="row.item.fontSize"
             @input="handleInput($event, row.index, 'fontSize')"
             type="number"
+            :disabled="row.item.fieldType == 'IMAGE'"
             @click="selectRow(row.index)"
           ></b-form-input>
         </template>
@@ -79,9 +82,9 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             @click="selectRow(row.index)"
           ></b-form-input>
         </template>
-        <template v-slot:cell(options)="row">
+        <template v-slot:cell(remove)="row">
           <b-button variant="danger" @click="rowDeleteClick(row)" class="mr-2">
-            Delete
+            X
           </b-button>
         </template>
       </b-table>
@@ -92,6 +95,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <script>
 const fieldTypes = [
   { value: "CUSTOM_TEXT", text: "Custom text" },
+  { value: "IMAGE", text: "Image" },
   { value: "LOCATION_NAME", text: "Location name" },
   { value: "EVENT_DESCRIPTION", text: "Event description" },
   { value: "EVENT_START_DATE", text: "Event start date" },
@@ -111,15 +115,15 @@ export default {
   data() {
     return {
       tableColumns: [
-        { key: "fieldType", sortable: false },
-        { key: "text", sortable: false },
+        { key: "content", sortable: false },
         { key: "fontSize", sortable: false },
         { key: "xPos", sortable: false },
         { key: "yPos", sortable: false },
         { key: "width", sortable: false },
         { key: "height", sortable: false },
-        { key: "options", sortable: false },
+        { key: "remove", sortable: false },
       ],
+      newFieldType: "CUSTOM_TEXT",
       selectedRow: 0,
     };
   },
@@ -135,16 +139,6 @@ export default {
         return { ...f };
       });
     },
-    onFieldTypeChange(value, row) {
-      const fields = this.copyImageFields();
-      if (value === "CUSTOM_TEXT") {
-        fields[row.index].customText = "";
-      } else {
-        fields[row.index].customText = `<${value}>`;
-      }
-      fields[row.index].fieldType = value;
-      this.$emit("input", fields);
-    },
     rowDeleteClick(row) {
       const fields = this.copyImageFields();
       fields.splice(row.index, 1);
@@ -153,17 +147,21 @@ export default {
     addNewField() {
       const fields = this.copyImageFields();
       fields.push({
-        fieldType: "CUSTOM_TEXT",
+        fieldType: this.newFieldType,
+        image: null,
         fontSize: 20,
         xPos: 50,
         yPos: 50,
         width: 300,
         height: 30,
-        customText: "",
+        customText:
+          this.newFieldType === "CUSTOM_TEXT" ? "" : `<${this.newFieldType}>`,
       });
+
       this.$emit("input", fields);
     },
     handleInput(value, index, column) {
+      console.log(column);
       const fields = this.copyImageFields();
       fields[index][column] = value;
       this.$emit("input", fields);
@@ -184,8 +182,8 @@ export default {
 
 <style scoped>
 .container {
-  height: 400px;
+  height: 45vh;
   overflow: scroll;
-  margin-top: 20px;
+  margin-top: 2vh;
 }
 </style>

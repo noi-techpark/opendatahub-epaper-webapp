@@ -84,36 +84,47 @@ export default {
 
         if (this.imageFields) {
           this.imageFields.forEach((f, index) => {
-            context.font = `${f.fontSize}px sans-serif`;
-            context.fillText(f.customText, f.xPos, f.yPos);
+            if (f.image == null) {
+              context.font = `${f.fontSize}px sans-serif`;
+              context.fillText(f.customText, f.xPos, f.yPos);
 
-            if (this.focusedFieldIndex === index) {
-              //Draw text field boundaries
-              const xPos = parseInt(f.xPos);
-              const yPos = parseInt(f.yPos) - parseInt(f.fontSize);
-              const width = parseInt(f.width);
-              const height = parseInt(f.height);
+              if (this.focusedFieldIndex === index) {
+                //Draw text field boundaries
+                const xPos = parseInt(f.xPos);
+                const yPos = parseInt(f.yPos) - parseInt(f.fontSize);
+                const width = parseInt(f.width);
+                const height = parseInt(f.height);
 
-              //Draw upper border
-              this.drawDashedLine(context, xPos, yPos, xPos + width, yPos);
-              //Draw right border
-              this.drawDashedLine(
-                context,
-                xPos + width,
-                yPos,
-                xPos + width,
-                yPos + height
-              );
-              //Draw bottom border
-              this.drawDashedLine(
-                context,
-                xPos,
-                yPos + height,
-                xPos + width,
-                yPos + height
-              );
-              //Draw left border
-              this.drawDashedLine(context, xPos, yPos, xPos, yPos + height);
+                //Draw upper border
+                this.drawDashedLine(context, xPos, yPos, xPos + width, yPos);
+                //Draw right border
+                this.drawDashedLine(
+                  context,
+                  xPos + width,
+                  yPos,
+                  xPos + width,
+                  yPos + height
+                );
+                //Draw bottom border
+                this.drawDashedLine(
+                  context,
+                  xPos,
+                  yPos + height,
+                  xPos + width,
+                  yPos + height
+                );
+                //Draw left border
+                this.drawDashedLine(context, xPos, yPos, xPos, yPos + height);
+              }
+            } else {
+              // images
+              let img = new Image();
+              img.onload = function () {
+                ctx.drawImage(img, f.xPos, f.yPos);
+                alert("the image is drawn");
+              };
+              img.src = URL.createObjectURL(f.image);
+              // context.drawImage(f.image, f.xPos, f.yPos);
             }
           });
         }
