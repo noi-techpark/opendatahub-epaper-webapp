@@ -29,6 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             :options="resolutions"
           >
           </b-form-select>
+          <b-form-file v-model="image" accept="image/*"></b-form-file>
 
           <!-- content preview -->
           <b-card>
@@ -84,7 +85,8 @@ export default {
     return {
       name: this.template.name,
       description: this.template.description,
-      imageFields: this.template.imageFields || [],
+      image: null,
+      imageFields: this.template.displayContent.imageFields || [],
       focusedFieldIndex: null,
       resolution: this.template.resolution || null,
     };
@@ -94,11 +96,11 @@ export default {
       return this.editMode ? "Edit template" : "Add template";
     },
     imageSrc() {
-      return this.editMode
+      return this.editMode && !this.image
         ? `${this.$store.state.URI}/template/get-image/${
-            this.templateId
+            this.template.uuid
           }?x=${Date.now()}`
-        : null;
+        : this.image;
     },
     resolutions() {
       return this.$store.state.resolutions.map((r) => {
@@ -118,14 +120,14 @@ export default {
 
   methods: {
     submitTemplate() {
-      const { name, description, resolution, imageFields, templateId } = this;
+      const { name, description, resolution,image, imageFields} = this;
       const templateContent = {
+        image,
         displayContent: {
           imageFields,
         },
-        templateUuid: templateId,
       };
-      const template = {
+      const newTemplate = {
         name,
         description,
         resolution,
@@ -134,13 +136,13 @@ export default {
       let storeOperation;
       if (this.editMode) {
         storeOperation = "updateTemplate";
-        template.uuid = templateId;
+        newTemplate.uuid = this.template.uuid;
       } else {
         storeOperation = "createTemplate";
       }
 
       this.$store
-        .dispatch(storeOperation, template)
+        .dispatch(storeOperation, newTemplate)
         .then((template) => {
           if (template) {
             templateContent.templateUuid = template.uuid;

@@ -119,6 +119,7 @@ export default {
   },
   created() {
     this.fieldTypes = fieldTypes;
+    console.log(this.imageFields);
   },
   mounted() {
     this.selectRow(this.selectedRow);

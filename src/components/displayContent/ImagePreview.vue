@@ -1,4 +1,4 @@
-props<!--
+<!--
 SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
 
 SPDX-License-Identifier: AGPL-3.0-or-later
@@ -10,13 +10,14 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <script>
 export default {
-  props: {
-    editMode: Boolean,
-    imageFields: Array,
-    focusedFieldIndex: Number,
-    width: Number,
-    height: Number,
-  },
+  props: [
+    "editMode",
+    "imageSrc",
+    "imageFields",
+    "focusedFieldIndex",
+    "width",
+    "height",
+  ],
   created() {
     //To prevent duplicate ids between separate instances
     this.canvasid = Math.ceil(Math.random() * 1000000);
@@ -73,10 +74,7 @@ export default {
   },
   methods: {
     refreshImageCanvas() {
-      let canvas = document.getElementById(this.canvasid);
-
-      canvas.width = this.width;
-      canvas.height = this.height;
+      const canvas = document.getElementById(this.canvasid);
       if (this.previewImg && canvas.width > 0 && canvas.height > 0) {
         let context = canvas.getContext("2d");
 
@@ -121,7 +119,7 @@ export default {
       }
     },
     applyDataURLToCanvas(newSrc) {
-      var reader = new FileReader();
+      let reader = new FileReader();
 
       reader.onloadend = () => {
         this.previewImg.src = reader.result;
