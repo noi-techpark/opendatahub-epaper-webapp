@@ -83,12 +83,11 @@ export default {
       const canvas = document.getElementById(this.canvasid);
       if (this.previewImg && canvas.width > 0 && canvas.height > 0) {
         let context = canvas.getContext("2d");
-        
         // clear screen
         context.clearRect(0, 0, canvas.width, canvas.height);
-        
-        // draw image, if set
-        if (this.previewImg.height > 0 && this.previewImg.width > 0 ) {
+
+        // draw image
+        if (this.previewImg.height > 0 && this.previewImg.width > 0) {
           context.drawImage(this.previewImg, 0, 0);
         }
 
@@ -98,6 +97,15 @@ export default {
           this.imageFields.forEach((f, index) => {
             context.font = `${f.fontSize}px sans-serif`;
             context.fillText(f.customText, f.xPos, f.yPos);
+
+            // draw repeats
+            if (this.maxRooms > 1 && f.repeat) {
+              let roomHeight = this.height / this.maxRooms;
+              for (let i = 1; i < this.maxRooms; i++) {
+                let y = f.yPos + roomHeight * i;
+                context.fillText(f.customText, f.xPos, y);
+              }
+            }
 
             if (this.focusedFieldIndex === index) {
               //Draw text field boundaries

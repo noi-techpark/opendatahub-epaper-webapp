@@ -73,6 +73,14 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             @click="selectRow(row.index)"
           ></b-form-input>
         </template>
+        <template v-slot:cell(repeat)="row">
+          <b-form-checkbox
+            :value="row.item.height"
+            @input="handleInput($event, row.index, 'repeat')"
+            type="checkbox"
+            @click="selectRow(row.index)"
+          ></b-form-checkbox>
+        </template>
         <template v-slot:cell(remove)="row">
           <b-button variant="danger" @click="rowDeleteClick(row)" class="mr-2">
             X
@@ -111,6 +119,7 @@ export default {
         { key: "yPos", sortable: false },
         { key: "width", sortable: false },
         { key: "height", sortable: false },
+        { key: "repeat", sortable: false },
         { key: "remove", sortable: false },
       ],
       newFieldType: "CUSTOM_TEXT",
