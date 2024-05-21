@@ -157,7 +157,7 @@ export default {
     },
     addNewField() {
       const fields = this.copyImageFields();
-      fields.push({
+      fields.unshift({
         fieldType: "CUSTOM_TEXT",
         fontSize: 42,
         xPos: 50,
