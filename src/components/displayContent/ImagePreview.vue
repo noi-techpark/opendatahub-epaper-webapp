@@ -101,8 +101,8 @@ export default {
             // draw repeats
             if (this.maxRooms > 1 && !f.fixed) {
               let roomHeight = this.height / this.maxRooms;
-              for (let i = 1; i < this.maxRooms; i++) {
-                let y = f.yPos + roomHeight * i;
+              for (let room = 1; room <= this.maxRooms; room++) {
+                let y = parseInt(f.yPos) + (roomHeight * room);
                 context.fillText(f.customText, f.xPos, y);
               }
             }

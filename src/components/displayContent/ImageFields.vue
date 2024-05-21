@@ -125,7 +125,6 @@ export default {
         { key: "fixed", sortable: false },
         { key: "remove", sortable: false },
       ],
-      newFieldType: "CUSTOM_TEXT",
       selectedRow: 0,
     };
   },
