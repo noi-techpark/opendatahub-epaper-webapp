@@ -83,8 +83,15 @@ export default {
       const canvas = document.getElementById(this.canvasid);
       if (this.previewImg && canvas.width > 0 && canvas.height > 0) {
         let context = canvas.getContext("2d");
+        
+        // clear screen
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // draw image, if set
+        if (this.previewImg.height > 0 && this.previewImg.width > 0 ) {
+          context.drawImage(this.previewImg, 0, 0);
+        }
 
-        context.drawImage(this.previewImg, 0, 0);
         context.lineWidth = 3;
 
         if (this.imageFields) {
