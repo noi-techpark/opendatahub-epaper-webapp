@@ -72,6 +72,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         :focusedFieldIndex="focusedFieldIndex"
         :width="resolution ? resolution.width : 1440"
         :height="resolution ? resolution.height : 2560"
+        :maxRooms="maxRooms"
       ></ImagePreview>
     </div>
   </b-form>

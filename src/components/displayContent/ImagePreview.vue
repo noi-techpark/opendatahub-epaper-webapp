@@ -17,6 +17,7 @@ export default {
     "focusedFieldIndex",
     "width",
     "height",
+    "maxRooms",
   ],
   created() {
     //To prevent duplicate ids between separate instances
@@ -71,6 +72,11 @@ export default {
         this.refreshImageCanvas();
       },
     },
+    maxRooms: {
+      handler: function () {
+        this.refreshImageCanvas();
+      },
+    },
   },
   methods: {
     refreshImageCanvas() {
@@ -115,6 +121,14 @@ export default {
               this.drawDashedLine(context, xPos, yPos, xPos, yPos + height);
             }
           });
+        }
+        // draw room split lines
+        if (this.maxRooms > 1) {
+          let roomHeight = this.height / this.maxRooms;
+          for (let i = 1; i < this.maxRooms; i++) {
+            let y = roomHeight * i;
+            this.drawDashedLine(context, 0, y, this.width, y);
+          }
         }
       }
     },
