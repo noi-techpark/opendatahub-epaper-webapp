@@ -158,6 +158,7 @@ export default {
       if (this.editMode) {
         storeOperation = "updateTemplate";
         newTemplate.uuid = this.template.uuid;
+        templateContent.templateUuid = this.template.uuid;
       } else {
         storeOperation = "createTemplate";
       }
@@ -168,6 +169,7 @@ export default {
           if (template) {
             templateContent.templateUuid = template.uuid;
           }
+          console.log(templateContent);
           return this.$store.dispatch("updateTemplateContent", templateContent);
         })
         .then(() => this.$router.replace("templates"))
