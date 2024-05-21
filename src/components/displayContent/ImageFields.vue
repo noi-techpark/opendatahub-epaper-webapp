@@ -6,12 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <template>
   <div>
-    <b-input-group>
-      <b-form-select v-model="newFieldType" :options="fieldTypes">
-      </b-form-select>
-      <b-button variant="success" @click="addNewField()"> Add </b-button>
-    </b-input-group>
-
+    <b-button variant="success" @click="addNewField()"> Add field </b-button>
     <div class="container">
       <b-table
         striped
@@ -24,6 +19,14 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         no-select-on-click
         ref="fieldTable"
       >
+        <template v-slot:cell(fieldType)="row">
+          <b-form-select
+            :value="row.item.fieldType"
+            :options="fieldTypes"
+            @input="onFieldTypeChange($event, row)"
+            @click="selectRow(row.index)"
+          ></b-form-select>
+        </template>
         <template v-slot:cell(content)="row">
           <b-form-textarea
             type="text"
@@ -112,6 +115,7 @@ export default {
   data() {
     return {
       tableColumns: [
+        { key: "fieldType", sortable: false },
         { key: "content", sortable: false },
         { key: "fontSize", sortable: false },
         { key: "xPos", sortable: false },
@@ -137,6 +141,16 @@ export default {
         return { ...f };
       });
     },
+    onFieldTypeChange(value, row) {
+      const fields = this.copyImageFields();
+      if (value === "CUSTOM_TEXT") {
+        fields[row.index].customText = "";
+      } else {
+        fields[row.index].customText = `<${value}>`;
+      }
+      fields[row.index].fieldType = value;
+      this.$emit("input", fields);
+    },
     rowDeleteClick(row) {
       const fields = this.copyImageFields();
       fields.splice(row.index, 1);
@@ -145,17 +159,15 @@ export default {
     addNewField() {
       const fields = this.copyImageFields();
       fields.push({
-        fieldType: this.newFieldType,
+        fieldType: "CUSTOM_TEXT",
         fontSize: 42,
         xPos: 50,
-        yPos: 102,
+        yPos: 100,
         width: 800,
         height: 52,
-        fixed: this.newFieldType === "CUSTOM_TEXT",
-        customText:
-          this.newFieldType === "CUSTOM_TEXT" ? "" : `<${this.newFieldType}>`,
+        fixed: false,
+        customText: "CUSTOM_TEXT",
       });
-
       this.$emit("input", fields);
     },
     handleInput(value, index, column) {
