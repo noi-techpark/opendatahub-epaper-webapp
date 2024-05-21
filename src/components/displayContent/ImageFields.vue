@@ -127,7 +127,6 @@ export default {
   },
   created() {
     this.fieldTypes = fieldTypes;
-    console.log(this.imageFields);
   },
   mounted() {
     this.selectRow(this.selectedRow);
@@ -147,12 +146,12 @@ export default {
       const fields = this.copyImageFields();
       fields.push({
         fieldType: this.newFieldType,
-        fontSize: 20,
+        fontSize: 42,
         xPos: 50,
-        yPos: 50,
-        width: 300,
-        height: 30,
-        fixed: true,
+        yPos: 102,
+        width: 800,
+        height: 52,
+        fixed: this.newFieldType === "CUSTOM_TEXT",
         customText:
           this.newFieldType === "CUSTOM_TEXT" ? "" : `<${this.newFieldType}>`,
       });
@@ -160,7 +159,6 @@ export default {
       this.$emit("input", fields);
     },
     handleInput(value, index, column) {
-      console.log(column);
       const fields = this.copyImageFields();
       fields[index][column] = value;
       this.$emit("input", fields);

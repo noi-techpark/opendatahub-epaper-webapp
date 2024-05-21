@@ -99,7 +99,6 @@ export default {
             context.fillText(f.customText, f.xPos, f.yPos);
 
             // draw repeats
-            console.log(f.fixed);
             if (this.maxRooms > 1 && !f.fixed) {
               let roomHeight = this.height / this.maxRooms;
               for (let i = 1; i < this.maxRooms; i++) {
