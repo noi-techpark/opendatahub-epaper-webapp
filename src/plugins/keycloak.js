@@ -4,7 +4,7 @@
 
 import Keycloak from 'keycloak-js'
 
-const _keycloak = Keycloak({
+const _keycloak = new Keycloak({
   url: process.env.VUE_APP_KEYCLOAK_URL,
   realm: process.env.VUE_APP_KEYCLOAK_REALM,
   clientId: process.env.VUE_APP_KEYCLOAK_CLIENT_ID,
