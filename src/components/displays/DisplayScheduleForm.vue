@@ -94,7 +94,7 @@ export default {
       type: String,
       default: "",
     },
-    eventId: Number,
+    eventId: String,
     displayUuid: String,
     uuid: String,
     initialImageFields: Array,
