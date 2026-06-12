@@ -88,7 +88,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             @click="row.item.disabled ? deleteEventClick(row.item) : disableEventClick(row.item)"
             class="mr-2"
           >
-            {{ row.item.disabled ? "Enable" : "Disable" }}
+            {{ row.item.disabled ? (isPast(row.item) ? "Delete" : "Enable") : "Disable" }}
           </b-button>
           <b-button
             v-if="!row.item.eventId"
@@ -189,7 +189,10 @@ export default {
     toggleEditForm(item) {
       this.rowToEdit = item;
     },
-async reload() {
+    isPast(item) {
+      return item.endDate < new Date();
+    },
+    async reload() {
       await this.$store.dispatch("loadDisplaySchedule", this.displayUuid);
     },
     async disableEventClick(item) {
