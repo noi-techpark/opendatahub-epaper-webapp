@@ -10,7 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       v-if="showAddForm"
       :editMode="false"
       :displayUuid="displayUuid"
-      @completed="showAddForm = false"
+      @completed="onAddFormComplete()"
     ></DisplayScheduleForm>
     <DisplayScheduleForm
       v-else-if="rowToEdit"
@@ -178,8 +178,13 @@ export default {
     this.$store.dispatch("loadDisplaySchedule", this.displayUuid);
   },
   methods: {
+    onAddFormComplete() {
+      this.showAddForm = false;
+      this.reload();
+    },
     onEditFormComplete() {
       this.rowToEdit = null;
+      this.reload();
     },
     toggleEditForm(item) {
       this.rowToEdit = item;
@@ -187,15 +192,18 @@ export default {
     isPast(item) {
       return item.endDate < new Date();
     },
+    reload() {
+      this.$store.dispatch("loadDisplaySchedule", this.displayUuid);
+    },
     disableEventClick(item) {
       this.$store.dispatch("updateDisplaySchedule", {
         ...item,
         disabled: !item.disabled,
-      });
+      }).then(() => this.reload());
     },
     deleteEventClick(item) {
       this.$store.dispatch("deleteDisplaySchedule", item)
-        .then(() => this.$store.dispatch("loadDisplaySchedule", this.displayUuid));
+        .then(() => this.reload());
     },
   },
 };
