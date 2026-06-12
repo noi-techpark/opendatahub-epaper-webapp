@@ -82,16 +82,25 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             Edit
           </b-button>
           <b-button
-            v-if="row.item.eventId"
+            v-if="row.item.eventId && !row.item.disabled"
             squared
-            :variant="row.item.disabled ? 'success' : 'danger'"
-            @click="row.item.disabled ? deleteEventClick(row.item) : disableEventClick(row.item)"
+            variant="danger"
+            @click="disableEventClick(row.item)"
             class="mr-2"
           >
-            {{ row.item.disabled ? (isPast(row.item) ? "Delete" : "Enable") : "Disable" }}
+            Disable
           </b-button>
           <b-button
-            v-if="!row.item.eventId"
+            v-else-if="row.item.eventId && row.item.disabled && !isPast(row.item)"
+            squared
+            variant="success"
+            @click="deleteEventClick(row.item)"
+            class="mr-2"
+          >
+            Enable
+          </b-button>
+          <b-button
+            v-if="!row.item.eventId || (row.item.disabled && isPast(row.item))"
             squared
             variant="danger"
             @click="deleteEventClick(row.item)"
