@@ -189,7 +189,7 @@ export default {
       this.$store
         .dispatch(storeOperation, data)
         .then((sc) => {
-          if (sc) {
+          if (sc && sc.uuid) {
             content.scheduledContentUuid = sc.uuid;
           }
           return this.$store.dispatch("updateScheduledContent", content);

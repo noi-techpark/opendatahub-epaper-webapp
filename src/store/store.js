@@ -364,11 +364,10 @@ export default new Vuex.Store({
           //If server indicates that a new resource was created, we have to use server response for UUID
           if (response.status === 201) {
             commit("UPDATE_DISPLAY_SCHEDULE", response.data);
-            return Promise.resolve(response.data);
           } else {
             commit("UPDATE_DISPLAY_SCHEDULE", schedule);
-            return Promise.resolve();
           }
+          return Promise.resolve(response.data);
         })
         .catch(err => {
           // eslint-disable-next-line
