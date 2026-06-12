@@ -73,6 +73,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             Details
           </b-button>
           <b-button
+            v-if="!row.item.eventId"
             squared
             variant="warning"
             @click="toggleEditForm(row.item)"
@@ -81,7 +82,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             Edit
           </b-button>
           <b-button
-            v-if="row.item.eventId && !row.item.uuid"
+            v-if="row.item.eventId"
             squared
             :variant="row.item.disabled ? 'success' : 'danger'"
             @click="disableEventClick(row.item)"
@@ -90,16 +91,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             {{ row.item.disabled ? "Enable" : "Disable" }}
           </b-button>
           <b-button
-            v-else-if="row.item.eventId && row.item.uuid && !isPast(row.item)"
-            squared
-            variant="warning"
-            @click="restoreEventClick(row.item)"
-            class="mr-2"
-          >
-            Restore
-          </b-button>
-          <b-button
-            v-else
+            v-if="!row.item.eventId || (row.item.uuid && isPast(row.item))"
             squared
             variant="danger"
             @click="deleteEventClick(row.item)"
@@ -203,10 +195,6 @@ export default {
     },
     deleteEventClick(item) {
       this.$store.dispatch("deleteDisplaySchedule", item)
-        .then(() => this.$store.dispatch("loadDisplaySchedule", this.displayUuid));
-    },
-    restoreEventClick(item) {
-      this.$store.dispatch("restoreDisplaySchedule", item)
         .then(() => this.$store.dispatch("loadDisplaySchedule", this.displayUuid));
     },
   },

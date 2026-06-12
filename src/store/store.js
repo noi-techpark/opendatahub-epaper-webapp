@@ -95,12 +95,6 @@ export default new Vuex.Store({
         state.displaySchedules[schedule.displayUuid].splice(index, 1);
       }
     },
-    RESTORE_DISPLAY_SCHEDULE(state, schedule) {
-      var index = state.displaySchedules[schedule.displayUuid].indexOf(schedule);
-      if (index > -1) {
-        Vue.delete(state.displaySchedules[schedule.displayUuid][index], "uuid");
-      }
-    },
 
     UPDATE_DISPLAY(state, updatedDisplay) {
       var index = state.displays.indexOf(
@@ -311,20 +305,6 @@ export default new Vuex.Store({
         });
     },
 
-    restoreDisplaySchedule({ commit }, schedule) {
-      const URL = this.state.URI + "/ScheduledContent/delete/" + schedule.uuid;
-      return axios
-        .delete(URL, this.state.axiosKeycloakConfig)
-        .then(() => {
-          commit("RESTORE_DISPLAY_SCHEDULE", schedule);
-          return Promise.resolve();
-        })
-        .catch(err => {
-          // eslint-disable-next-line
-          console.log(err);
-          return Promise.reject(err.response.data);
-        });
-    },
 
     updateDisplay({ commit }, data) {
       const URL = this.state.URI + "/display/update/";
