@@ -81,7 +81,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             Edit
           </b-button>
           <b-button
-            v-if="row.item.eventId"
+            v-if="row.item.eventId && !(row.item.uuid && isPast(row.item))"
             squared
             :variant="row.item.disabled ? 'success' : 'danger'"
             @click="disableEventClick(row.item)"
@@ -182,6 +182,9 @@ export default {
     },
     toggleEditForm(item) {
       this.rowToEdit = item;
+    },
+    isPast(item) {
+      return item.endDate < new Date();
     },
     disableEventClick(item) {
       this.$store.dispatch("updateDisplaySchedule", {
