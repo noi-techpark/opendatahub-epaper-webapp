@@ -192,18 +192,25 @@ export default {
     isPast(item) {
       return item.endDate < new Date();
     },
-    reload() {
-      this.$store.dispatch("loadDisplaySchedule", this.displayUuid);
+    async reload() {
+      await this.$store.dispatch("loadDisplaySchedule", this.displayUuid);
     },
-    disableEventClick(item) {
-      this.$store.dispatch("updateDisplaySchedule", {
-        ...item,
-        disabled: !item.disabled,
-      }).then(() => this.reload());
+    async disableEventClick(item) {
+      try {
+        await this.$store.dispatch("updateDisplaySchedule", {
+          ...item,
+          disabled: !item.disabled,
+        });
+      } finally {
+        await this.reload();
+      }
     },
-    deleteEventClick(item) {
-      this.$store.dispatch("deleteDisplaySchedule", item)
-        .then(() => this.reload());
+    async deleteEventClick(item) {
+      try {
+        await this.$store.dispatch("deleteDisplaySchedule", item);
+      } finally {
+        await this.reload();
+      }
     },
   },
 };
