@@ -18,16 +18,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       :sort-by.sync="sortBy"
       :sort-desc.sync="sortDesc"
     >
-      <template v-slot:cell(preview)="row">
-        <b-img
-          :src="`${apiUrl}/display/get-image/${row.item.uuid}?withTextFields=true`"
-          height="48"
-          style="cursor:pointer"
-          @click="openPreview(row.item.uuid)"
-          alt="preview"
-        />
-      </template>
-
       <template v-slot:cell(show_details)="row">
         <b-button
           squared
@@ -48,14 +38,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         </b-col>
       </template>
     </b-table>
-    <b-modal id="preview-modal" title="Preview" centered ok-only ok-title="Close">
-      <b-img
-        v-if="previewDisplayUuid"
-        :src="`${apiUrl}/display/get-image/${previewDisplayUuid}?withTextFields=true`"
-        fluid
-      />
-    </b-modal>
-
     <b-modal id="details-modal" hide-footer size="xl" title="Display details">
       <b-tabs content-class="mt-3" class="detailModal" v-if="selectedDisplay">
         <b-tab lazy title="Information">
@@ -114,9 +96,7 @@ export default {
   data() {
     return {
       selectedDisplay: null,
-      previewDisplayUuid: null,
       fields: [
-        { key: "preview", sortable: false },
         { key: "name", sortable: true },
         { key: "rooms", sortable: true },
         { key: "status", sortable: true },
@@ -130,9 +110,6 @@ export default {
   computed: {
     displays() {
       return this.$store.state.displays;
-    },
-    apiUrl() {
-      return this.$store.state.URI;
     },
     formatDisplayRows() {
       if (!this.displays) return [];
@@ -209,10 +186,6 @@ export default {
         display.ignoreScheduledContent = ignoreFlag;
         this.$store.dispatch("updateDisplay", display);
       }
-    },
-    openPreview(uuid) {
-      this.previewDisplayUuid = uuid;
-      this.$bvModal.show("preview-modal");
     },
     openDisplayDetails(display) {
       this.selectedDisplay = display;
