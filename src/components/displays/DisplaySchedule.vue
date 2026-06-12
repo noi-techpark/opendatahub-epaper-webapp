@@ -202,10 +202,12 @@ export default {
       });
     },
     deleteEventClick(item) {
-      this.$store.dispatch("deleteDisplaySchedule", item);
+      this.$store.dispatch("deleteDisplaySchedule", item)
+        .then(() => this.$store.dispatch("loadDisplaySchedule", this.displayUuid));
     },
     restoreEventClick(item) {
-      this.$store.dispatch("restoreDisplaySchedule", item);
+      this.$store.dispatch("restoreDisplaySchedule", item)
+        .then(() => this.$store.dispatch("loadDisplaySchedule", this.displayUuid));
     },
   },
 };

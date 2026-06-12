@@ -217,7 +217,7 @@ export default new Vuex.Store({
     },
 
     loadDisplaySchedule({ commit }, displayUuid) {
-      axios
+      return axios
         .get(this.state.URI + `/ScheduledContent/all?displayUuid=${displayUuid}`, this.state.axiosKeycloakConfig)
         .then(response => commit("SET_DISPLAY_SCHEDULE", { schedule: response.data, displayUuid }));
     },
