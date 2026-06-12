@@ -205,7 +205,7 @@ export default {
       this.$store.dispatch("deleteDisplaySchedule", item);
     },
     restoreEventClick(item) {
-      this.$store.dispatch("deleteDisplaySchedule", item);
+      this.$store.dispatch("restoreDisplaySchedule", item);
     },
   },
 };
