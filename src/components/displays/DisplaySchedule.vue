@@ -85,13 +85,13 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             v-if="row.item.eventId"
             squared
             :variant="row.item.disabled ? 'success' : 'danger'"
-            @click="disableEventClick(row.item)"
+            @click="row.item.disabled ? deleteEventClick(row.item) : disableEventClick(row.item)"
             class="mr-2"
           >
             {{ row.item.disabled ? "Enable" : "Disable" }}
           </b-button>
           <b-button
-            v-if="!row.item.eventId || (row.item.uuid && isPast(row.item))"
+            v-if="!row.item.eventId"
             squared
             variant="danger"
             @click="deleteEventClick(row.item)"
@@ -189,10 +189,7 @@ export default {
     toggleEditForm(item) {
       this.rowToEdit = item;
     },
-    isPast(item) {
-      return item.endDate < new Date();
-    },
-    async reload() {
+async reload() {
       await this.$store.dispatch("loadDisplaySchedule", this.displayUuid);
     },
     async disableEventClick(item) {
