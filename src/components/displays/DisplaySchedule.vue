@@ -200,6 +200,7 @@ export default {
         await this.$store.dispatch("updateDisplaySchedule", {
           ...item,
           disabled: !item.disabled,
+          displayUuid: this.displayUuid,
         });
       } finally {
         await this.reload();
