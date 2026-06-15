@@ -94,7 +94,7 @@ export default {
       type: String,
       default: "",
     },
-    eventId: Number,
+    eventId: String,
     displayUuid: String,
     uuid: String,
     initialImageFields: Array,
@@ -189,7 +189,7 @@ export default {
       this.$store
         .dispatch(storeOperation, data)
         .then((sc) => {
-          if (sc) {
+          if (sc && sc.uuid) {
             content.scheduledContentUuid = sc.uuid;
           }
           return this.$store.dispatch("updateScheduledContent", content);

@@ -10,7 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       v-if="showAddForm"
       :editMode="false"
       :displayUuid="displayUuid"
-      @completed="showAddForm = false"
+      @completed="onAddFormComplete()"
     ></DisplayScheduleForm>
     <DisplayScheduleForm
       v-else-if="rowToEdit"
@@ -73,6 +73,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             Details
           </b-button>
           <b-button
+            v-if="!row.item.eventId"
             squared
             variant="warning"
             @click="toggleEditForm(row.item)"
@@ -81,16 +82,25 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             Edit
           </b-button>
           <b-button
-            v-if="row.item.eventId"
+            v-if="row.item.eventId && !row.item.disabled"
             squared
-            :variant="row.item.disabled ? 'success' : 'danger'"
+            variant="danger"
             @click="disableEventClick(row.item)"
             class="mr-2"
           >
-            {{ row.item.disabled ? "Enable" : "Disable" }}
+            Disable
           </b-button>
           <b-button
-            v-else
+            v-else-if="row.item.eventId && row.item.disabled && !isPast(row.item)"
+            squared
+            variant="success"
+            @click="deleteEventClick(row.item)"
+            class="mr-2"
+          >
+            Enable
+          </b-button>
+          <b-button
+            v-if="!row.item.eventId || (row.item.disabled && isPast(row.item))"
             squared
             variant="danger"
             @click="deleteEventClick(row.item)"
@@ -177,20 +187,40 @@ export default {
     this.$store.dispatch("loadDisplaySchedule", this.displayUuid);
   },
   methods: {
+    onAddFormComplete() {
+      this.showAddForm = false;
+      this.reload();
+    },
     onEditFormComplete() {
       this.rowToEdit = null;
+      this.reload();
     },
     toggleEditForm(item) {
       this.rowToEdit = item;
     },
-    disableEventClick(item) {
-      this.$store.dispatch("updateDisplaySchedule", {
-        ...item,
-        disabled: !item.disabled,
-      });
+    isPast(item) {
+      return item.endDate < new Date();
     },
-    deleteEventClick(item) {
-      this.$store.dispatch("deleteDisplaySchedule", item);
+    async reload() {
+      await this.$store.dispatch("loadDisplaySchedule", this.displayUuid);
+    },
+    async disableEventClick(item) {
+      try {
+        await this.$store.dispatch("updateDisplaySchedule", {
+          ...item,
+          disabled: !item.disabled,
+          displayUuid: this.displayUuid,
+        });
+      } finally {
+        await this.reload();
+      }
+    },
+    async deleteEventClick(item) {
+      try {
+        await this.$store.dispatch("deleteDisplaySchedule", item);
+      } finally {
+        await this.reload();
+      }
     },
   },
 };

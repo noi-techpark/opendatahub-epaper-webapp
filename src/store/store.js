@@ -211,7 +211,7 @@ export default new Vuex.Store({
     },
 
     loadDisplaySchedule({ commit }, displayUuid) {
-      axios
+      return axios
         .get(this.state.URI + `/ScheduledContent/all?displayUuid=${displayUuid}`, this.state.axiosKeycloakConfig)
         .then(response => commit("SET_DISPLAY_SCHEDULE", { schedule: response.data, displayUuid }));
     },
@@ -305,6 +305,7 @@ export default new Vuex.Store({
         });
     },
 
+
     updateDisplay({ commit }, data) {
       const URL = this.state.URI + "/display/update/";
       return axios
@@ -343,11 +344,10 @@ export default new Vuex.Store({
           //If server indicates that a new resource was created, we have to use server response for UUID
           if (response.status === 201) {
             commit("UPDATE_DISPLAY_SCHEDULE", response.data);
-            return Promise.resolve(response.data);
           } else {
             commit("UPDATE_DISPLAY_SCHEDULE", schedule);
-            return Promise.resolve();
           }
+          return Promise.resolve(response.data);
         })
         .catch(err => {
           // eslint-disable-next-line
